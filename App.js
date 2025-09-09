@@ -23,7 +23,7 @@ app.use(express.json());
 //mount routes
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
-app.all(/.*/, (req, next)=>{
+app.all(/.*/, (req, res, next)=>{
     next(new ApiErorr(`Route ${req.originalUrl} not found`, 400));
 })
 
