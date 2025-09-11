@@ -5,7 +5,7 @@ import authMiddleware from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-router.use(authMiddleware); 
+// router.use(authMiddleware); 
 router.route('/').get(getUsers); 
 router.route('/:id')
 .get(validateGet, getUserById)

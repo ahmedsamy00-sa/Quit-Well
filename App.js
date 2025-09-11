@@ -23,7 +23,7 @@ app.use(express.json());
 //mount routes
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
-app.all(/.*/, (req, res, next)=>{
+app.all(/.*/, (req, res ,next)=>{
     next(new ApiErorr(`Route ${req.originalUrl} not found`, 400));
 })
 
@@ -33,12 +33,4 @@ app.use(globalError);
 const port = process.env.PORT || 3300;
 app.listen(port, ()=>{
     console.log(`Server is running on port ${port}`);
-});
-
-process.on('unhandledRejection', (err, promise)=>{
-        console.error(`Unhandled Rejection Errors: ${err}`);
-    server.close(()=>{
-        console.error(`Shutting down...`);
-        process.exit(1);
-    })
-});
+})
