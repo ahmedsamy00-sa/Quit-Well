@@ -4,9 +4,6 @@ import mongoose from "mongoose";
 const dbConnection = ()=>{
     mongoose.connect(process.env.DB_URL).then((conn)=>{
         console.log(`Database connected to ${conn.connection.host}`);
-    }).catch((err)=>{
-        console.log(err);
-        process.exit(1);
     });
 };
 

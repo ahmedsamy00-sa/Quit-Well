@@ -5,7 +5,7 @@ import User from '../models/userModel.js';
 // Get all users
 // GET /api/v1/users
 // Private
-const getUsers = asyncHandler(async (req, res) => {
+export const getUsers = asyncHandler(async (req, res) => {
     const users = await User.find();
     res.status(200).json({
         status: "success",
@@ -17,7 +17,7 @@ const getUsers = asyncHandler(async (req, res) => {
 // Get a single user by ID
 // GET /api/v1/users/:id
 // Private
-const getUserById = asyncHandler(async (req, res, next) => {
+export const getUserById = asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.params.id);
     if (!user) {
         return next(new ApiError('User not found', 404));
@@ -31,7 +31,7 @@ const getUserById = asyncHandler(async (req, res, next) => {
 // Update a user by ID
 // PUT /api/v1/users/:id
 // Private
-const updateUserById = asyncHandler(async (req, res, next) => {
+export const updateUserById = asyncHandler(async (req, res, next) => {
     const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
     if (!user) {
         return next(new ApiError('User not found', 404));
@@ -46,7 +46,7 @@ const updateUserById = asyncHandler(async (req, res, next) => {
 // Delete a user by ID
 // DELETE /api/v1/users/:id
 // Private
-const deleteUserById = asyncHandler(async (req, res, next) => {
+export const deleteUserById = asyncHandler(async (req, res, next) => {
     const user = await User.findByIdAndDelete(req.params.id);
     if (!user) {
         return next(new ApiError('User not found', 404));
@@ -56,5 +56,3 @@ const deleteUserById = asyncHandler(async (req, res, next) => {
         message: "User deleted successfully"
     });
 });
-
-export { getUsers, getUserById, updateUserById, deleteUserById };

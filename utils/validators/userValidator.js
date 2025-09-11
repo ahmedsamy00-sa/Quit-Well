@@ -1,26 +1,28 @@
-import { body, validationResult } from 'express-validator';
-import ApiError from '../ApiError.js';
+import { check } from 'express-validator';
+import { validatorMiddleware } from '../../middlewares/validatorMiddleware.js';
 
-const validateUpdateUser = [
-    body('name').notEmpty().withMessage('Username is required'),
-    body('phone').isMobilePhone().withMessage("Invalid phone number").isLength({ min: 11, max: 11 })
-    .withMessage("Phone number must be exactly 11 characters"),
-    body('email').custom((value) => {
-        if (value) {
-            throw new Error('Email cannot be updated');
+
+export const validateGet = [
+    check('id').isMongoId().withMessage('Invalid user ID format'),
+    validatorMiddleware
+];
+
+export const validateUpdateUser = [
+    check('id').isMongoId().withMessage('Invalid user ID format'),
+    check('name').optional().notEmpty().withMessage('Username cannot be empty'),
+    check('email').custom((value, { req }) => {
+        if(req.body.email !== undefined){
+            throw new Error("Email cannot be updated", 400);
         }
         return true;
     }),
-    
+    check('phone').optional().isMobilePhone().withMessage("Invalid phone number").isLength({ min: 11, max: 11 })
+    .withMessage("Phone number must be exactly 11 characters"),
+    validatorMiddleware
 ];
 
-const handleValidateUserError = (req, res, next)=>{
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        const extractedErrors = errors.array().map(err => err.msg);
-        return next(new ApiError(extractedErrors.join(', '), 400));
-    }
-    next();
-}
+export const validateDelete = [
+    check('id').isMongoId().withMessage('Invalid user ID format'),
+    validatorMiddleware
+];
 
-export { validateUpdateUser, handleValidateUserError };

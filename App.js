@@ -33,4 +33,12 @@ app.use(globalError);
 const port = process.env.PORT || 3300;
 app.listen(port, ()=>{
     console.log(`Server is running on port ${port}`);
-})
+});
+
+process.on('unhandledRejection', (err, promise)=>{
+        console.error(`Unhandled Rejection Errors: ${err}`);
+    server.close(()=>{
+        console.error(`Shutting down...`);
+        process.exit(1);
+    })
+});

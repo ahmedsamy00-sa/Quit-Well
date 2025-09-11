@@ -8,7 +8,7 @@ import jwt from 'jsonwebtoken';
 // register a new user
 // POST /api/v1/auth/register
 // Public
-const registerUser = asyncHandler(async (req, res, next) => {
+export const registerUser = asyncHandler(async (req, res, next) => {
     const { name, email, phone, password, confirmPassword } = req.body;
     const userExists = await User.find({ $or: [{ email }, { phone }] });
     if (userExists.length) {
@@ -37,7 +37,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
 // login a user
 // POST /api/v1/auth/login
 // Public
-const loginUser = asyncHandler(async (req, res, next) => {
+export const loginUser = asyncHandler(async (req, res, next) => {
     const { email, password } = req.body;
     const user = await User.find({ email });
     if (!user.length) {
@@ -61,5 +61,3 @@ const loginUser = asyncHandler(async (req, res, next) => {
         message: "Login successful"
     });
 });
-
-export { registerUser, loginUser };
